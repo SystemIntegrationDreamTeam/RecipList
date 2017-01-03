@@ -15,6 +15,7 @@ import com.rabbitmq.client.DefaultConsumer;
 import com.rabbitmq.client.Envelope;
 
 import java.io.IOException;
+
 /**
  *
  * @author Buhrkall
@@ -27,7 +28,6 @@ public class ReceiptList {
     public static void main(String[] argv) throws Exception {
         ConnectionFactory factory = new ConnectionFactory();
         factory.setHost("datdb.cphbusiness.dk");
-        factory.setVirtualHost("student");
         factory.setUsername("Dreamteam");
         factory.setPassword("bastian");
         Connection connection = factory.newConnection();
@@ -49,12 +49,19 @@ public class ReceiptList {
 
                 for (int i = 0; i < arr.length; i++) {
                     switch (arr[i]) {
-                        case "DreamTeamBankXML":
+                        case "DreamTeamXMLQueue":
                             sendingChannel.basicPublish(EXCHANGE_NAME, "DreamTeamBankXML", null, message.getBytes());
                             break;
-                        case "DreamTeamBankJSON":
+                        case "DreamTeamJSONQueue":
                             sendingChannel.basicPublish(EXCHANGE_NAME, "DreamTeamBankJSON", null, message.getBytes());
                             break;
+                        case "cphbusiness.bankXML":
+                            sendingChannel.basicPublish(EXCHANGE_NAME, "CphBusinessXML", null, message.getBytes());
+                            break;
+                        case "cphbusiness.bankJSON":
+                            sendingChannel.basicPublish(EXCHANGE_NAME, "CphBusinessJSON", null, message.getBytes());
+                            break;
+
                     }
                 }
             }
